@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2> GeoCaching Student List</h2>
+  <p>Click on the button to toggle between showing and hiding Student List.</p>
+  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">List of students</button>
+  <div id="demo" class="collapse">
+  <ul>
+      <li> <a href="#">madhu</a></li>
+  <li>prabhu</li>
+  <li>madhu</li>
+  <li>prabhu</li>
+  </ul>
+
+Please click on each individual student to view their specimens and grade the students.
+  </div>
+
+
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for student in student_list %}
+      <tr>
+        <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
+        <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
+        <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
+      </tr>
+     {% endfor %}
+
+    </tbody>
+  </table>
+
+
+
+</div>
+
+</body>
+</html>
+
+
+

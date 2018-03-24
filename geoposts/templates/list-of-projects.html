@@ -1,0 +1,15 @@
+<head>
+    <title> Project Portal</title>
+<body>
+
+<h3> Welcome to Geocaching. Here are the list of projects</h3>
+
+<ul>
+    {% for p in projects %}
+
+    <li> <h4><strong><a href = "/geoposts/?name={{p.name}}">{{p.name}}</a></strong></h4></li>
+    {% endfor %}
+</ul>
+
+</body>
+</head>

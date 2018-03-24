@@ -1,0 +1,15 @@
+<h1>Here are the results</h1>
+
+
+
+{% for s in student_list %}
+<h2> Name of Student: {{s.user}}</h2>
+<h2> Name of Specimen: {{s.name}}</h2>
+<h2> Description: {{s.description}}</h2>
+<h2> Name of the City: {{s.city}}</h2>
+<h2> Result of experiment: {{s.result}}</h2>
+<br>
+{% endfor %}
+
+
+

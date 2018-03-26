@@ -52,18 +52,28 @@ def show_caching_projects(request):
 
 @login_required(redirect_field_name='main-home')
 def show_project_posts(request):
+    list_of_id=[]
     user = request.user
     project_title = request.GET.get('name')
     id = Geoproject.objects.get(name = project_title).id
     posts = Geopost.objects.filter(geoproject=id)
-    return render( request,'list-of-posts.html',{'posts':posts})
+    user_query_set = GeopostStudent.objects.filter(user=request.user)
+    for id in user_query_set:
+        list_of_id.append(id.geo_post_id)
+    refined_query_set = posts.exclude(id__in = list_of_id)
+
+    return render( request,'list-of-posts.html',{'posts':refined_query_set})
 
 def collect_geopostInfo(request):
     list_of_experiments_inputs_dict={}
     for i in  request.POST:
+        print("****************************************************")
+        print(i)
         if "experimentinput_" in i:
+            print(i)
             key = i.split("_")[1]
             list_of_experiments_inputs_dict[key] = (request.POST[i])
+
 
     geo_post_update_object = Geopost.objects.get(id = int(request.POST.get('primarykey')))
     name = geo_post_update_object.name
@@ -73,6 +83,7 @@ def collect_geopostInfo(request):
     city = geo_post_update_object.city
     result = list_of_experiments_inputs_dict
 
+
     student_geopost = GeopostStudent(name = name,
                                      latitude = latitude,
                                      longitude =  longitude,
@@ -80,12 +91,20 @@ def collect_geopostInfo(request):
                                      city = city,
                                      result = result,
                                      user = request.user,
-                                     done = True)
+                                     done = True,
+                                     geo_post_id=geo_post_update_object.id)
+    print("stupid redydy"*50)
+    print(list_of_experiments_inputs_dict)
+
+    queryset = GeopostStudent.objects.filter(done =True ,user = request.user)
+    print(student_geopost.result)
+    context = {'posts':queryset}
+
 
     print(student_geopost.name,student_geopost.latitude,student_geopost.description,student_geopost.result)
 
     student_geopost.save()
-    return HttpResponse("<h1> Successfully updated the experiment </h1>")
+    return render(request,'students-specimen-list.html',context)
 
 
 class StudentList(generic.ListView):

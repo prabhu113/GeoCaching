@@ -392,17 +392,17 @@
                     <dd class="accordion-content accordionItem is-collapsed" id="accordion2" aria-hidden="true">
                         <div class="container-fluid" style="padding-top: 20px;">
                             <p class="headings">Specimen Data</p>
-                            <form class="main-container" action="{% url 'collect-geopost' %} " method = "post">
+                            <form class="main-container" action="{% url 'collect-geopost' %}" enctype="multipart/form-data" method = "post">
                                 {% csrf_token%}
                                 <div class="row">
                                     <div class="col-xs-4">
                                         <label for="fullname" class="label-style">Specimen Name</label>
                                     </div>
-                                     <!--<div class="form-group col-lg-4">
+                                     <div class="form-group col-lg-4 reddy">
                                          {% for image in post.image.all %}
-                                        <img src = "/{{image.image}}" class = "img-thumbnail">
+                                        <img src = "/media/geocaching_images/{{image.image_name}}" class = "img-thumbnail">
                                          {% endfor %}
-                                    </div>-->
+                                    </div>
                                     <div class="form-group col-lg-4">
                                         <input type="text" id="fullname" class="form-control" value="{{post.name}}" readonly=true>
                                     </div>
@@ -458,7 +458,7 @@
                                        {% for exp in post.experiment.all %}
                                         <ul>
                                             <li>{{exp.experiment_name}}</li>
-                                            <input type="text" class="form-control" id="experiment_box" required="true" name = {{"experimentinput_"|add:exp.experiment_name}}>
+                                            <input type="text" class="form-control" id="experiment_box" required="true" name = "{{"experimentinput_"|add:exp.experiment_name}}">
                                         </ul>
                                         {% endfor %}
                                     </div>
@@ -473,11 +473,11 @@
                                         <label for="city" class="label-style">Choose Specimen Image to Upload: </label>
                                     </div>
                                     <div class="form-group col-lg-4">
-                                        <input type="file" class="inputstl" id="selphoto" name="imageupload">
+                                        <input  id ="imageupload" type="file" class="inputstl"  name="imageupload">
                                     </div>
                                     <div class="hint">
                                         <i class="hint-icon">i</i>
-                                        <p class="hint-description">Upload Image</p>
+                                        <p class="hint-description" name ='image_upload'>Upload Image</p>
                                     </div>
 
                                       <div class="form-group col-lg-4">
@@ -614,6 +614,19 @@
                     "<br>Longitude: " + position.coords.longitude;
             }
         </script>
+
+
+    <script>
+    function name_tag_giver(name){
+
+    var refined_first = name.replace(/[^a-zA-Z0-9]/g,'_');
+    var final_string = "experimentinput+" + refined_first
+
+    return final_string
+
+}
+
+    </script>
 
 
 

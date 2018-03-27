@@ -398,11 +398,10 @@
                                     <div class="col-xs-4">
                                         <label for="fullname" class="label-style">Specimen Name</label>
                                     </div>
-                                     <!--<div class="form-group col-lg-4">
-                                         {% for image in post.image.all %}
-                                        <img src = "/{{image.image}}" class = "img-thumbnail">
-                                         {% endfor %}
-                                    </div>-->
+                                     <div class="form-group col-lg-4">
+
+                                        <img src = "/media/geocaching_images/{{post.image.image_name}}" class = "img-thumbnail">
+                                    </div>
                                     <div class="form-group col-lg-4">
                                         <input type="text" id="fullname" class="form-control" value="{{post.name}}" readonly=true>
                                     </div>

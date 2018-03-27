@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from PIL import Image
+from PIL import Image as im
 import jsonfield
 
 
@@ -24,12 +24,21 @@ class Experiment(models.Model):
 
 
 class Image(models.Model):
-    name = models.CharField(max_length = 20,blank=True)
-    image = models.ImageField()
+    image_name = models.CharField(max_length=250,blank=True)
+    image = models.ImageField(upload_to='geocaching_images')
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        try:
+            given_name = self.image.name
+            self.image_name = given_name
+        except:
+            pass
 
 
-    def __str__(self):
-        return self.name + "_image"
+        super(Image, self).save()
+
+        return self.id
 
 class CommonGeo(models.Model):
     name = models.CharField(max_length=250, blank=True)

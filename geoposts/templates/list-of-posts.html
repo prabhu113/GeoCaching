@@ -20,7 +20,7 @@
 
         <style>
 
-            #success_message{ display: none;}
+          #success_message{ display: none;}
 
             #contact_form{
 
@@ -54,6 +54,8 @@
 
             body {
                 font-family: 'Libre Baskerville';
+                background-color: #dff0d8;
+
             }
 
             .heading-primary {
@@ -67,14 +69,7 @@
                 border: 1px solid #ddd;
             }
 
-            .accordion dl:after,
-            .accordion-list:after {
-                content: "";
-                display: block;
-                height: 1em;
-                width: 100%;
-                background-color: #099DF6;
-            }
+
 
             .accordion dd,
             .accordion__panel {
@@ -100,7 +95,7 @@
 
             .accordionTitle,
             .accordion__Heading {
-                background-color: #099DF6;
+                background-color:#f4b642;
                 /*text-align: center; */
 
                 text-indent: 3px;
@@ -336,6 +331,23 @@
             }
 
 
+            /* Image CSS */
+            /* Shrink wrap strategy 1 */
+            .zoom {
+                padding: 0px;
+
+                transition: transform .2s; /* Animation */
+                width: 200px;
+                height: 150px;
+                margin: 0 auto;
+            }
+
+            .zoom:hover {
+                transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+            }
+
+
+
         </style>
 
 
@@ -347,6 +359,12 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">GeoCaching</a>
+
+                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-nav">
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 </button>
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Projects<span class="caret"></span></a>
@@ -354,6 +372,18 @@
                             <li><a href="#">Page 1-1</a></li>
                             <li><a href="#">Page 1-2</a></li>
                             <li><a href="#">Page 1-3</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Specimen found by you<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Page 1-1</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Still in progress<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Page 1-1</a></li>
+
                         </ul>
                     </li>
                     <li><a href="#">Create Project</a></li>
@@ -395,13 +425,18 @@
                             <form class="main-container" action="{% url 'collect-geopost' %}" enctype="multipart/form-data" method = "post">
                                 {% csrf_token%}
                                 <div class="row">
+                                    {% for image in post.image.all %}
+                                    <div class="form-group col-lg-4 ">
+
+                                        <img src = "/media/geocaching_images/{{image.image_name}}" class = "img-thumbnail">
+
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                                <div class="row">
                                     <div class="col-xs-4">
                                         <label for="fullname" class="label-style">Specimen Name</label>
-                                    </div>
-                                     <div class="form-group col-lg-4 reddy">
-                                         {% for image in post.image.all %}
-                                        <img src = "/media/geocaching_images/{{image.image_name}}" class = "img-thumbnail">
-                                         {% endfor %}
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <input type="text" id="fullname" class="form-control" value="{{post.name}}" readonly=true>
@@ -451,21 +486,23 @@
                                 </div>
 
                                  <div class="row">
-                                    <div class="col-xs-4">
-                                        <label for="city" class="label-style">Perform the following experiments </label>
-                                    </div>
+                                    <p class="headings">Please perform below experiments</p>
+                                   {% for exp in post.experiment.all %}
                                     <div class="form-group col-lg-4">
-                                       {% for exp in post.experiment.all %}
-                                        <ul>
-                                            <li>{{exp.experiment_name}}</li>
+
+                                        <label for="city" class="label-style">{{exp.experiment_name}}</label>
+
+                                    </div>
+                                     <div class="form-group col-lg-6">
+
                                             <input type="text" class="form-control" id="experiment_box" required="true" name = "{{"experimentinput_"|add:exp.experiment_name}}">
-                                        </ul>
-                                        {% endfor %}
                                     </div>
-                                    <div class="hint">
-                                        <i class="hint-icon">i</i>
-                                        <p class="hint-description">Experiment needs to be completed</p>
+                                     <div class="form-group col-lg-">
+                                         <label for="city" class="label-style"></label>
+
                                     </div>
+
+                                      {% endfor %}
                                 </div>
 
                                 <div class="row">

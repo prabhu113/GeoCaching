@@ -149,5 +149,3 @@ class StudentDetail(generic.ListView):
 
 
 
-
-

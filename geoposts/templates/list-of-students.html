@@ -70,12 +70,13 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">GeoCaching</a>
                 </div>
+
                 <ul class="nav navbar-nav">
                     <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Grade Projects<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#" data-toggle="modal" data-target="#basicModal">Project 1</a></li>
-                            <li><a href="#">Project 2</a></li>
-                            <li><a href="#">Project 3</a></li>
+                            {% for s in project_list %}
+                            <li><a href="/ajax/{{s.name}}" id = "ajax_selector" data-toggle="modal"  data-target="#basicModal">{{s.name}}</a></li>
+                            {% endfor %}
                         </ul>
                     </li>
 
@@ -118,11 +119,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for student in student_list %}
+                                            {% for p in project_list %}
                                             <tr class="success">
-                                                <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
-                                                <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
-                                                <td> <a href="students/{{student.id }}">{{ student.username }}</a></td>
+                                                <td> <a href="students/{{student.id }}">{{ p.user }}</a></td>
+                                                <td> <a href="students/{{student.id }}">{{ student.user }}</a></td>
+                                                <td> <a href="students/{{student.id }}">{{ student.user }}</a></td>
                                             </tr>
                                             {% endfor %}
 
@@ -170,7 +171,27 @@
         <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
         <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
+        <script>
 
+    $('#ajax_select').click(function(e){
+
+    e.preventDefault();
+
+      $.ajax({
+               type: "POST",
+               url: "/article/like/",
+               data: {
+               'post_id': $(this).attr('name'),
+               'csrfmiddlewaretoken': '{{csrf_token}}'
+               },
+               success: likeSuccess,
+               dataType: 'html'
+                });
+    });
+
+
+
+</script>
 
 
 

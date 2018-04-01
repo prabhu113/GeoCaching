@@ -111,9 +111,9 @@ def collect_geopostInfo(request):
 
 
 class StudentList(generic.ListView):
-    model = User
+    model = Geoproject
     template_name = 'list-of-students.html'
-    context_object_name = 'student_list'
+    context_object_name = 'project_list'
 
 
 

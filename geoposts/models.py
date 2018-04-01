@@ -2,11 +2,23 @@ from django.db import models
 from django.conf import settings
 from PIL import Image as im
 import jsonfield
+from django.contrib.auth.models import AbstractBaseUser
+
+
+class Meta:
+    app_label = 'Project-Data'
 
 
 class Geoproject(models.Model):
     name = models.CharField(max_length=250, blank=True)
     user = models.ManyToManyField(settings.AUTH_USER_MODEL)
+
+
+
+    class Meta:
+        verbose_name = 'Geo-Caching Project'
+
+        verbose_name_plural = 'Geo-Caching Projects'
 
     def __str__(self):
         return str(self.name)
@@ -40,6 +52,9 @@ class Image(models.Model):
 
         return self.id
 
+    def __str__(self):
+        return self.image_name
+
 class CommonGeo(models.Model):
     name = models.CharField(max_length=250, blank=True)
     latitude = models.FloatField(null=True, blank=True, default=None)
@@ -56,6 +71,11 @@ class Geopost(CommonGeo):
     geoproject = models.ForeignKey(Geoproject, on_delete=models.CASCADE)
     experiment = models.ManyToManyField(Experiment)
 
+    class Meta:
+        verbose_name = 'Specimen-List'
+
+        verbose_name_plural = 'Specimen-List'
+
     def __str__(self):
         return (self.name)
 
@@ -69,6 +89,7 @@ class GeopostStudent(CommonGeo):
 
     def get_absolute_url(self):
         return "/students/{0}".format(self.user.id)
+
 
 
 

@@ -19,6 +19,7 @@ from django.conf.urls import url,include
 from geoposts import views as geoposts_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
@@ -30,8 +31,17 @@ urlpatterns = [
     url(r'^project-portal/',geoposts_views.show_caching_projects,name = 'show-projects-portal'),
     url(r'^geoposts/',geoposts_views.show_project_posts,name ='show-posts'),
     url(r'^collectgeopost-info',geoposts_views.collect_geopostInfo,name = 'collect-geopost'),
-    url(r'^list-of-students',geoposts_views.StudentList.as_view(),name = 'list-of-students'),
+    url(r'^list-of-students', staff_member_required(geoposts_views.StudentList.as_view()),name = 'list-of-students'),
     path(r'students/<int:pk>',geoposts_views.StudentDetail.as_view(),name = 'list-of-students'),
+    url(r'^ajax/projectname', geoposts_views.project_students_list, name='project-students-list'),
+    url(r'^ajax/personalgrade', geoposts_views.show_personal_grade , name='personal-grade'),
+
+
+#login_required(ListSecretCodes.as_view()), name='secret'),
+
+    url(r'^update-grade/', geoposts_views.updateGrade, name='update-grade'),
+
+
 
 ]
 

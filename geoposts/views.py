@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User as auth_user
@@ -85,7 +86,7 @@ def collect_geopostInfo(request):
         image = request.FILES['imageupload']
 
     image_object = Image(image = image)
-    print("****************")
+
     c = image_object.save()
     student_geopost_image = Image.objects.get(id = c)
 
@@ -110,7 +111,11 @@ def collect_geopostInfo(request):
     return render(request,'students-specimen-list.html',context)
 
 
+
+
 class StudentList(generic.ListView):
+
+
     model = Geoproject
     template_name = 'list-of-students.html'
     context_object_name = 'project_list'
@@ -127,6 +132,96 @@ class StudentDetail(generic.ListView):
         qs = super().get_queryset()
         # filter by a variable captured from url, for example
         return qs.filter(user = self.kwargs['pk'])
+
+
+@staff_member_required(redirect_field_name='main-home')
+def project_students_list(request):
+
+    dict_students = {}
+    if request.method == 'POST' and request.is_ajax():
+
+        project_name = request.POST['name']
+        print(project_name)
+
+
+        student_object = Geoproject.objects.get(name = project_name ).user
+
+        for user in student_object.all():
+            total = 0
+
+            total_object = GeopostStudent.objects.filter(user = user.id)
+
+
+            for t in total_object:
+                print(t.grade)
+                try:
+
+                    total = total + int(t.grade)
+                except:
+                    total = total + 0
+
+            dict_students[user.username] = total
+
+
+        print(dict_students)
+
+
+    return HttpResponse(json.dumps({'students': dict_students}), content_type="application/json")
+
+
+@staff_member_required(redirect_field_name='main-home')
+def updateGrade(request):
+    if request.method =='POST':
+        pk = request.POST['grade_id']
+        grade = request.POST['grade']
+
+    goto_id = GeopostStudent.objects.get(id = pk).user.pk
+
+    GeopostStudent.objects.filter(pk=pk).update(grade=grade)
+
+    link = "/students/" + str(goto_id)
+    return HttpResponseRedirect(link)
+
+
+def show_personal_grade(request):
+
+    print("hello personal grade")
+
+    total = 0
+    dict_students = {}
+    if request.method == 'POST' and request.is_ajax():
+
+        project_name = request.POST['name']
+
+        student_object = Geoproject.objects.get(name=project_name).user
+
+        for user in student_object.all():
+            print(user.username,request.user)
+
+            if (str(user.username) == str(request.user)):
+
+
+                total_object = GeopostStudent.objects.filter(user=user.id)
+                print(total_object)
+
+                for t in total_object:
+                    print(t.grade)
+                    try:
+
+                        total = total + int(t.grade)
+                    except:
+                        total = total + 0
+
+                print(total)
+
+                dict_students[user.username] = total
+
+    print(dict_students)
+
+    return HttpResponse(json.dumps({'students': dict_students}), content_type="application/json")
+
+
+
 
 
 

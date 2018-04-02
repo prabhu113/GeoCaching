@@ -75,7 +75,7 @@
                     <li class="dropdown active"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Grade Projects<span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% for s in project_list %}
-                            <li><a href="/ajax/{{s.name}}" id = "ajax_selector" data-toggle="modal"  data-target="#basicModal">{{s.name}}</a></li>
+                            <li><a href="#" id = "ajax_selector" data-toggle="modal" data-target="#basicModal">{{s.name}}</a></li>
                             {% endfor %}
                         </ul>
                     </li>
@@ -119,13 +119,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for p in project_list %}
-                                            <tr class="success">
-                                                <td> <a href="students/{{student.id }}">{{ p.user }}</a></td>
-                                                <td> <a href="students/{{student.id }}">{{ student.user }}</a></td>
-                                                <td> <a href="students/{{student.id }}">{{ student.user }}</a></td>
+
+                                            <tr class="stupid-guy">
+
                                             </tr>
-                                            {% endfor %}
+
 
                                         </tbody>
                                     </table>
@@ -173,21 +171,48 @@
 
         <script>
 
-    $('#ajax_select').click(function(e){
+  $('#ajax_selector').click(function(e){
 
     e.preventDefault();
+    var name = document.getElementById("ajax_selector").innerHTML;
+    console.log(name)
 
-      $.ajax({
-               type: "POST",
-               url: "/article/like/",
-               data: {
-               'post_id': $(this).attr('name'),
-               'csrfmiddlewaretoken': '{{csrf_token}}'
-               },
-               success: likeSuccess,
-               dataType: 'html'
-                });
-    });
+       $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "/ajax/projectname",
+            data:{'name': name,'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            success: function(user) {
+            $('.stupid-guy').empty();
+            for (var i in user.students) {
+
+            var name = "<td> <a href='/students/" + user.students[i]+">"+("'")+i+("</a></td>")
+
+
+            $( ".stupid-guy" ).append("<td>")
+            $( ".stupid-guy" ).append(user.students[i])
+            //$( ".stupid-guy" ).append("'")
+           // $( ".stupid-guy" ).append(">")
+            $( ".stupid-guy" ).append(i)
+           // $( ".stupid-guy" ).append("</td>")
+
+            //console.log(i)
+            //console.log(user.students[i])
+
+            }
+
+            console.log(name)
+
+
+             //<td> <a href="students/"
+             //<td> <a href="students/{{student.id }}">{{ p.user }}</a></td>
+
+
+            console.log("Json recieved")
+
+            }
+        })
+   });
 
 
 

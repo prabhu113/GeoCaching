@@ -551,19 +551,28 @@
 
 
                                 </div>
+                            </form>
 
                                 <!--  <div class="form-group">
 <label for="selphoto" class="col-sm-2 control-label">Select a File to upload:</label>
 <div class="col-sm-5">
 <input type="file" class="inputstl" id="selphoto" name="sentfile">
 </div>
-</div> -->                   <div class="row">
+</div> -->                  <form class = "main-container" action="{% url 'update-grade' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
                                 <div class="col-xs-4">
                                     <label for="fullname" class="label-style">Points</label>
                                 </div>
+
                                 <div class="form-group col-lg-4">
-                                    <input type='text' id='total' value='0' />
+                                    <input type='text' id='grade' name ='grade' value={{s.grade}} />
                                 </div>
+
+                                <div class="form-group col-lg-4">
+                                    <input type='text' id='grade_id' name ='grade_id' value={{s.id}} hidden />
+                                </div>
+
                                 <div class="hint">
                                     <i class="hint-icon">i</i>
                                     <p class="hint-description"> specimen name</p>
@@ -585,11 +594,13 @@
                                 </div>
 
                                 <div class="button-container">
-                                    <button class="btn btn-warning col-sm-4 col-md-offset-4" type="submit">close</button>
+                                    <button class="btn btn-warning col-sm-4 col-md-offset-4" type="submit">submit Marks</button>
 
                                 </div>
-                                {% endfor %}
                             </form>
+
+
+                                {% endfor %}
                         </div>
                     </dd>
                     <!-- end accordion tab 2 -->

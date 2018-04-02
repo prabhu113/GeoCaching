@@ -86,6 +86,7 @@ class GeopostStudent(CommonGeo):
     result = jsonfield.JSONField()
     done = models.BooleanField(blank = True)
     geo_post_id = models.CharField(max_length = 250,blank= True)
+    grade = models.CharField(max_length = 250,blank = True)
 
     def get_absolute_url(self):
         return "/students/{0}".format(self.user.id)

@@ -160,7 +160,8 @@ def project_students_list(request):
                 except:
                     total = total + 0
 
-            dict_students[user.username] = total
+
+            dict_students[user.username] = str(total)+(",")+str(user.id)
 
 
         print(dict_students)

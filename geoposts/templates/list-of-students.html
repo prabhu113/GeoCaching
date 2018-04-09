@@ -113,14 +113,13 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Firstname</th>
-                                                <th>Lastname</th>
-                                                <th>Email</th>
+                                                <th>Name</th>
+                                                <th>Grade</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-                                            <tr class="stupid-guy">
+                                            <tr class="table-data">
 
                                             </tr>
 
@@ -183,21 +182,20 @@
             url: "/ajax/projectname",
             data:{'name': name,'csrfmiddlewaretoken': '{{ csrf_token }}'},
             success: function(user) {
-            $('.stupid-guy').empty();
+            $('.table-data').empty();
             for (var i in user.students) {
 
-            var name = "<td> <a href='/students/" + user.students[i]+">"+("'")+i+("</a></td>")
+            var name = "<tr><td>"+ "<a href=" + "/students/" + user.students[i].split(",")[1]+ ">"+ i +"</a></td><td>" + "----------------------------------------------------" +  user.students[i].split(",")[0] + "</td></tr>"
+            //<a href="https://www.w3schools.com">Visit W3Schools</a>
+
+            $(".table-data").append(name)
 
 
-            $( ".stupid-guy" ).append("<td>")
-            $( ".stupid-guy" ).append(user.students[i])
-            //$( ".stupid-guy" ).append("'")
-           // $( ".stupid-guy" ).append(">")
-            $( ".stupid-guy" ).append(i)
-           // $( ".stupid-guy" ).append("</td>")
-
-            //console.log(i)
-            //console.log(user.students[i])
+            //$( ".table-data" ).append("<td>")
+            //$( ".table-data" ).append(user.students[i])
+            //$( ".table-data" ).append(i)
+            //$( ".table-data" ).append("</td>")
+            //$( ".table-data" ).append("</tr>")
 
             }
 

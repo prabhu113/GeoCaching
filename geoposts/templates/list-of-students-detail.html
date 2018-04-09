@@ -16,7 +16,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>Bootstrap 3 Registration Form with Validation</title>
+        <title>List of student detail</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
 
         <script  src="assets/js/signup.js"></script>
@@ -373,26 +373,37 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">GeoCaching</a>
                 </div>
+
+                <ul class="nav navbar-nav">
+                        <li> <a href="{% url 'list-of-students' %}">Student List</a></li>
+
+                    </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </div>
         </nav>
 
 
+             <h1><center>Specimen List</center></h1>
+        {% for student in student_list %}
+
+    {% if forloop.first %}
+         <h1 class="heading-primary"> Below is {{student.user.username}}'s Specimen data </h1>
+    {%endif%}
+{%endfor%}
 
         <!-- Used some part of the code from Chris Wright (https://codepen.io/chriswrightdesign/)'s Pen  -->
         {% for s in student_list %}
         <div class="container">
-            <h1><center>Prabhu SpecimenList</center></h1>
-            <h1 class="heading-primary"> Below is your Specimen data for the project1 </h1>
+
             <div class="accordion">
                 <dl>
 
 
                     <dt>
                         <!-- accordion tab 2 - Shipping Info -->
-                        <a href="#accordion2" aria-expanded="false" aria-controls="accordion2" class="accordion-title accordionTitle js-accordionTrigger">Specimen Information</a>
+                        <a href="#accordion2" aria-expanded="false" aria-controls="accordion2" class="accordion-title accordionTitle js-accordionTrigger">{{s.name}}</a>
                     </dt>
                     <dd class="accordion-content accordionItem is-collapsed" id="accordion2" aria-hidden="true">
                         <div class="container-fluid" style="padding-top: 20px;">
@@ -449,52 +460,46 @@
 
                                 <div class="row">
                                     <div class="col-xs-4">
-                                        <label for="city" class="label-style">City</label>
+                                        <label for="city" class="label-style">Location</label>
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <input type="text" id="city" class="form-control" placeholder="Enter City" value ={{s.city}} required>
                                     </div>
                                     <div class="hint">
                                         <i class="hint-icon">i</i>
-                                        <p class="hint-description">Enter your City</p>
+                                        <p class="hint-description">Location</p>
                                     </div>
                                 </div>
 
 
 
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <label for="city" class="label-style">Use GPS coordinates</label>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <input type="checkbox" onclick="getLocation()" class="form-control" placeholder="Enter City" value="">
-                                    </div>
-                                    <div class="hint">
-
-                                        <p id="demo"></p>
-                                    </div>
-                                </div>
 
 
-                                <div class="row">
-                                    <div class="col-xs-8">
-                                        <label for="fullname" class="label-style"> Experiments Performed</label>
-                                    </div>
+                                <div class="col-xs-12">
+                                        <p class="headings">Experiments Performed</p>
+                                 </div>
 
+
+
+                                 <div class="form-group col-lg-8">
+                                     <table style="width:100%">
+                                            <tr>
+                                            <th>Experiment</th>
+                                            <th>Results</th>
+                                            </tr>
+                                        {% for key, value in s.result.items %}
+                                             <tr>
+                                             <td>{{key}}</td>
+                                                 <td>{{value}}</td>
+                                                 </tr>
+
+                                        {% endfor %}
+                                        </table>
+                                    </div>
                                     <div class="hint">
                                         <i class="hint-icon">i</i>
-                                        <p class="hint-description">Here is your findings of  experiment</p>
+                                        <p class="hint-description">Experiment Finished</p>
                                     </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <label for="fullname" class="label-style">experiment Name</label>
-                                    </div>
-                                    <div class="form-group col-lg-4">
-                                        <input type="text" id="fullname" class="form-control" placeholder="" required  value = {{s.results}}>
-                                    </div>
-
                                 </div>
 
                                 <div class="row">
@@ -575,7 +580,7 @@
 
                                 <div class="hint">
                                     <i class="hint-icon">i</i>
-                                    <p class="hint-description"> specimen name</p>
+                                    <p class="hint-description"> points obtained</p>
                                 </div>
                                 </div>
 
@@ -585,16 +590,24 @@
                                         <label for="fullname" class="label-style">Max Points</label>
                                     </div>
                                     <div class="form-group col-lg-4">
-                                        <input type='text' id='total' value='0' />
+                                        <input type='text' id='total' value='10' readonly/>
                                     </div>
                                     <div class="hint">
                                         <i class="hint-icon">i</i>
-                                        <p class="hint-description"> specimen name</p>
+                                        <p class="hint-description"> maximum points</p>
                                     </div>
                                 </div>
 
                                 <div class="button-container">
                                     <button class="btn btn-warning col-sm-4 col-md-offset-4" type="submit">submit Marks</button>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <label for="fullname" class="label-style"></label>
+                                    </div>
+
 
                                 </div>
                             </form>

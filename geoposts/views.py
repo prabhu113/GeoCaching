@@ -67,50 +67,51 @@ def show_project_posts(request):
     return render( request,'list-of-posts.html',{'posts':refined_query_set})
 
 def collect_geopostInfo(request):
-    list_of_experiments_inputs_dict={}
-    for i in  request.POST:
-        if "experimentinput_" in i:
-            key = i.split("_")[1]
-            list_of_experiments_inputs_dict[key] = (request.POST[i])
+    try:
+
+        list_of_experiments_inputs_dict={}
+        for i in  request.POST:
+            if "experimentinput_" in i:
+                key = i.split("_")[1]
+                list_of_experiments_inputs_dict[key] = (request.POST[i])
 
 
-    geo_post_update_object = Geopost.objects.get(id = int(request.POST.get('primarykey')))
-    name = geo_post_update_object.name
-    latitude = geo_post_update_object.latitude
-    longitude = geo_post_update_object.longitude
-    description = geo_post_update_object.description
-    city = geo_post_update_object.city
-    result = list_of_experiments_inputs_dict
+        geo_post_update_object = Geopost.objects.get(id = int(request.POST.get('primarykey')))
+        name = geo_post_update_object.name
+        latitude = geo_post_update_object.latitude
+        longitude = geo_post_update_object.longitude
+        description = geo_post_update_object.description
+        city = geo_post_update_object.city
+        result = list_of_experiments_inputs_dict
 
-    if request.method == 'POST' and request.FILES['imageupload']:
-        image = request.FILES['imageupload']
+        if request.method == 'POST' and request.FILES['imageupload']:
+            image = request.FILES['imageupload']
 
-    image_object = Image(image = image)
+        image_object = Image(image = image)
 
-    c = image_object.save()
-    student_geopost_image = Image.objects.get(id = c)
+        c = image_object.save()
+        student_geopost_image = Image.objects.get(id = c)
 
-    student_geopost = GeopostStudent(name=name,
-                                     latitude=latitude,
-                                     longitude=longitude,
-                                     description=description,
-                                     city=city,
-                                     result=result,
-                                     user=request.user,
-                                     done=True,
-                                     geo_post_id=geo_post_update_object.id,
-                                     image = student_geopost_image)
+        student_geopost = GeopostStudent(name=name,
+                                         latitude=latitude,
+                                         longitude=longitude,
+                                         description=description,
+                                         city=city,
+                                         result=result,
+                                         user=request.user,
+                                         done=True,
+                                         geo_post_id=geo_post_update_object.id,
+                                         image = student_geopost_image)
 
 
-    queryset = GeopostStudent.objects.filter(done =True ,user = request.user)
+        queryset = GeopostStudent.objects.filter(done =True ,user = request.user)
+        student_geopost.save()
+    except:
+        queryset = GeopostStudent.objects.filter(done=True, user=request.user)
+
     context = {'posts':queryset}
 
-
-
-    student_geopost.save()
     return render(request,'students-specimen-list.html',context)
-
-
 
 
 class StudentList(generic.ListView):

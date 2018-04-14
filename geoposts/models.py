@@ -29,6 +29,8 @@ class Geoproject(models.Model):
 class Experiment(models.Model):
     experiment_name = models.CharField(max_length =250,blank =True)
     result = models.CharField(max_length = 250,blank = True)
+    results_json = jsonfield.JSONField()
+
 
     def __str__(self):
         return self.experiment_name

@@ -555,12 +555,20 @@
                                                              <li><a href="#">Other</a></li>
                                                         </ul>
 
-
-
                                              </div> -->
-                                         <input type="text" class="form-control" id="experiment_box" required="true" name = "{{"experimentinput_"|add:exp.experiment_name}}">
+
+                                            <select class="selectpicker">
+                                             {% for c in post.experiment.all %}
+                                            <option >{{c.result}}</option>
+
+                                            {% endfor %}
+                                            </select>
 
                                          </div>
+                                          <!--  </div>
+                                         <input type="text" class="form-control" id="experiment_box" required="true" name = "{{"experimentinput_"|add:exp.experiment_name}}">
+
+                                         </div>-->
 
                                          <div class="form-group col-lg-">
                                              <label for="city" class="label-style"></label>
@@ -685,6 +693,13 @@
                         accordionToggles[i].addEventListener('click', switchAccordion, false);
                     }
                 })();
+
+
+
+
+            </script>
+
+            <script>
 
 
             </script>

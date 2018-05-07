@@ -351,6 +351,18 @@
                 }
 
 
+                .exp_submit {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
 
             </style>
 
@@ -543,14 +555,14 @@
                                      <div class="row">
                                         <p class="headings">Please perform below experiments</p>
                                        {% for exp in post.experiment.all %}
-                                        <div class="form-group col-lg-4">
+                                        <div class="form-group col-lg-8">
 
                                             <label for="city"  class = "experiment_name" class="label-style">{{exp.experiment_name}}</label>
                                             <span id = "tick-mark" class="form-control-feedback glyphicon glyphicon-remove"  style="color:red; display:None;"></span>
 
 
                                         </div>
-                                         <div class="form-group col-lg-6  carousel-search hidden-phone">
+                                         <div class="form-group col-lg-4  carousel-search hidden-phone">
 
                                             <!-- <div class="btn-group">
                                                       <a class="btn dropdown-toggle btn-select" data-toggle="dropdown" href="#">select an experiment<span class="caret"></span></a>
@@ -565,7 +577,7 @@
                                              </div> -->
 
 
-                                            <select class ="update-select">
+                                            <select class ="update-select" class="form-group col-lg-4">
                                              <option>{{exp.option_one}}</option>
                                              <option>{{exp.option_two}}</option>
                                                 <option >{{exp.option_three}}</option>
@@ -621,7 +633,7 @@
     </div> -->
 
                                     <div class="button-container">
-                                        <button class = "exp_submit" class="btn btn-success pull-middle" type="submit">Gather Specimen</button>
+                                        <button class = "exp_submit" class="btn btn-success pull-middle" type="submit">verify {{post.name}} experiments</button>
                                     </div>
                                 </form>
                             </div>
@@ -791,13 +803,13 @@
             data: {my_data: JSON.stringify( {'id': $("#primarykey").val(), 'experiment':experiment, 'array': array}) ,'csrfmiddlewaretoken': '{{ csrf_token }}'},
             success: function(result) {
             if (result.status == "False") {
-            alert("The answer is False");
+            alert("your experiments results are wrong, please try again");
             $('#tick-mark').css('display','block');
 
              }
              else{
 
-             alert("The answer is right..Moving on")
+             alert("your experiment results are right, Moving to next specimen")
              location.reload()
              }
 

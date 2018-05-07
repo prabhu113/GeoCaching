@@ -84,6 +84,8 @@ def collect_geopostInfo(request):
             dict_response[experiment[count_one]] = array[count_one]
             count_one = count_one + 1
 
+
+
         print(dict_response)
 
 
@@ -92,21 +94,22 @@ def collect_geopostInfo(request):
         required_object = Instructor_results.objects.filter(my_specimen =geopost_object)
         for i in required_object:
             whole_dict.update(i.result_json)
+        print("__________________________")
         print(whole_dict)
         count = 0
-        status = "False"
+        status = "True"
+        result= []
 
         for i in whole_dict:
 
-
-
             if dict_response[i]== whole_dict[i]:
+               result.append(i)
+               print(result)
 
-                status = "True"
             else:
 
                 status = "False"
-                break
+
 
 
         my_object = Geopost.objects.get(id=int(project_name['id']))
@@ -121,7 +124,7 @@ def collect_geopostInfo(request):
 
             student_geopost.save()
 
-        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+        return HttpResponse(json.dumps({'status': status,'result':result}), content_type="application/json")
 
 
 
